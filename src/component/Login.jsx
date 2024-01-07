@@ -4,17 +4,24 @@ import { validateForm } from "../utils/validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [isSigninForm, setIsSigninForm] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const fullNameRef = useRef(null);
   const toggleSignInForm = () => {
     setIsSigninForm(!isSigninForm);
   };
+  const dispatch = useDispatch();
   const handleBtnClick = (e) => {
     e.preventDefault();
     let message = validateForm(
@@ -32,7 +39,7 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log(user);
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -48,7 +55,18 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log(user);
+          updateProfile(auth.currentUser, {
+            displayName: fullNameRef.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/138746291?v=4",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(addUser({ uid, email, displayName, photoURL }));
+              navigate("/browse");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -71,6 +89,7 @@ const Login = () => {
         {!isSigninForm && (
           <input
             type="text"
+            ref={fullNameRef}
             placeholder="full name"
             className="p-4 my-4 w-full bg-gray-700"
           ></input>
