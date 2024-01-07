@@ -38,7 +38,6 @@ const Login = () => {
         passwordRef.current.value
       )
         .then((userCredential) => {
-          const user = userCredential.user;
           navigate("/browse");
         })
         .catch((error) => {
@@ -54,7 +53,6 @@ const Login = () => {
         passwordRef.current.value
       )
         .then((userCredential) => {
-          const user = userCredential.user;
           updateProfile(auth.currentUser, {
             displayName: fullNameRef.current.value,
             photoURL: "https://avatars.githubusercontent.com/u/138746291?v=4",

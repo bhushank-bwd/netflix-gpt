@@ -13,7 +13,6 @@ const useNowPlaying = () => {
       API_OPTIONS
     );
     const result = await fetchResult.json();
-    console.log(result);
     dispatch(addNowPlaying(result.results));
   };
 };
