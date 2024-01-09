@@ -20,7 +20,6 @@ const VideoBackground = ({ id }) => {
     });
     const temp_trailer = trailers.length > 0 ? trailers[0] : videoList[0];
 
-    console.log(temp_trailer.key);
     dispatch(addtrailer(temp_trailer));
   };
   return (
