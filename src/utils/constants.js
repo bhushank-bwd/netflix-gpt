@@ -17,3 +17,4 @@ export const SUPPORTED_LANGUAGES = [
 ];
 
 export const DP_URL = "https://avatars.githubusercontent.com/u/138746291?v=4";
+export const GPT_KEY = process.env.REACT_APP_GPT_KEY;

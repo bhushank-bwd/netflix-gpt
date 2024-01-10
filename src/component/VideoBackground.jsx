@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { API_OPTIONS } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addtrailer } from "../utils/movieSlice";
+import { addTrailer } from "../utils/movieSlice";
 
 const VideoBackground = ({ id }) => {
   const dispatch = useDispatch();
   const trailer = useSelector((store) => store.movie.trailer);
   useEffect(() => {
-    getTrailers();
+    !trailer && getTrailers();
   }, []);
   const getTrailers = async () => {
     const fetchResult = await fetch(
@@ -15,12 +15,12 @@ const VideoBackground = ({ id }) => {
       API_OPTIONS
     );
     const videoList = await fetchResult.json();
-    const trailers = videoList?.results.filter((v) => {
+    const trailers = videoList?.results?.filter((v) => {
       if (v.type === "Trailer") return v;
     });
     const temp_trailer = trailers.length > 0 ? trailers[0] : videoList[0];
 
-    dispatch(addtrailer(temp_trailer));
+    dispatch(addTrailer(temp_trailer));
   };
   return (
     <div className=" w-screen">
